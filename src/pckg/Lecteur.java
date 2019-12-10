@@ -1,8 +1,10 @@
 package pckg;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 
 public class Lecteur implements Runnable{
 	private String theadName;
@@ -15,19 +17,28 @@ public class Lecteur implements Runnable{
 		this.buf = buf;
 	}
 	public String readWord() throws Exception {
-		FileInputStream fis = new FileInputStream(new File(this.fileName)); 
-		int c;
-		String str = "";
-		String t;
-		while((c = fis.read()) >= 0) {
-			str += c;
-		}
-		return str.split("[ .]");
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.fileName))));
+        String line;
+        while ((line = br.readLine())!=null){
+                String[] Wordlist = line.split("[ ;.,!?\"]");
+                while (!line.equals(Wordlist)){
+                    System.out.println(line);
+                }
+        }
+        return line;
+        
+		
 	}
 	@Override
 	public void run() {
-		
-		
+		try {
+			for(String str : this.buf.data) {
+				readWord();
+			}
+		}
+		catch(Exception e) {
+			
+		}
 	}
 
 }
